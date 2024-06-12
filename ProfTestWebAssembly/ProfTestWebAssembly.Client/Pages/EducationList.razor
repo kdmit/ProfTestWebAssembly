@@ -1,0 +1,201 @@
+﻿@page "/educationList"
+@inject NavigationManager Navigation
+@using ProfTestWebAssembly.Client.Models
+@using static ProfTestWebAssembly.Client.Pages.Test
+@inject HttpClient client
+
+<PageTitle>EducationList</PageTitle>
+
+<MudDivider DividerType="DividerType.Middle" Class="my-12" />
+
+
+@switch(StaticVariables.getMaxTypeAnswer())
+{
+    case TypeAnswer.Human_Nature:
+
+        <MudText Typo="Typo.body1">
+            @StaticVariables.UserName, Ваш тип профессиональной направленности <b>“Человек - природа”</b>.<br />
+        </MudText>
+    
+    break;
+
+    case TypeAnswer.Human_Technique:
+        <MudText Typo="Typo.body1">
+            @StaticVariables.UserName, Ваш тип профессиональной направленности <b>“Человек - техника”</b>.<br />
+        </MudText>
+
+    break;
+
+    case TypeAnswer.Human_Human:
+
+        <MudText Typo="Typo.body1">
+            @StaticVariables.UserName, Ваш тип профессиональной направленности <b>“Человек-человек”</b>.<br />
+        </MudText>
+
+    break;
+
+    case TypeAnswer.Human_SignSystem:
+        <MudText Typo="Typo.body1">
+            @StaticVariables.UserName, Ваш тип профессиональной направленности <b>“Человек - знаковая система”</b>.<br />
+        </MudText>
+
+    break;
+
+    case TypeAnswer.Human_Art:
+        <MudText Typo="Typo.body1">
+            @StaticVariables.UserName, Ваш тип профессиональной направленности <b>“Человек - художественный образ”</b>.<br />
+        </MudText>
+
+    break;
+}
+
+<MudDivider DividerType="DividerType.Middle" Class="my-12" />
+
+<MudText Typo="Typo.body1">
+    Если хотите, можете изменить тип профиля
+</MudText>
+
+<MudSelect @bind-Value = "typeAnswer" Label="Профиль" AnchorOrigin="Origin.BottomCenter">
+    <MudSelectItem Value="@TypeAnswer.Human_Nature">Человек - природа</MudSelectItem>
+    <MudSelectItem Value="@TypeAnswer.Human_Technique">Человек - техника</MudSelectItem>
+    <MudSelectItem Value="@TypeAnswer.Human_Human">Человек-человек</MudSelectItem>
+    <MudSelectItem Value="@TypeAnswer.Human_SignSystem">Человек - знаковая система</MudSelectItem>
+    <MudSelectItem Value="@TypeAnswer.Human_Art">Человек - художественный образ</MudSelectItem>
+
+</MudSelect>
+
+<MudDivider DividerType="DividerType.Middle" Class="my-12" />
+
+<MudText Typo="Typo.body1">
+    В каком регионе Вы хотели бы учиться?
+</MudText>
+
+<MudAutocomplete T="string" Label="Регион" @bind-Value="Regionvalue" SearchFunc="@SearchRegion"
+                 ResetValueOnEmptyText="@resetValueOnEmptyText"
+                 CoerceText="@coerceText" CoerceValue="@coerceValue"
+                 AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" />
+
+<MudDivider DividerType="DividerType.Middle" Class="my-12" />
+
+<MudText Typo="Typo.body1">
+    Какой тип учебного заведения Вас интересует?
+</MudText>
+
+<MudSelect @bind-Value="orgType" Label="Тип учебного заведения" AnchorOrigin="Origin.BottomCenter">
+    <MudSelectItem Value="@OrgType.University">Университет</MudSelectItem>
+    <MudSelectItem Value="@OrgType.College">Колледж</MudSelectItem>
+    <MudSelectItem Value="@OrgType.UpSkill">Повышение квалификации</MudSelectItem>    
+    <MudSelectItem Value="@OrgType.ProfOrientation">Профессиональная подготовка</MudSelectItem>
+</MudSelect>
+
+<MudDivider DividerType="DividerType.Middle" Class="my-12" />
+
+
+<MudDataGrid Items="@HigherEducations.Where(x => x.City == Regionvalue && x.orgType==orgType && x.ListOfFaculty.Where(a => a.typeAnswer==typeAnswer).Count()>0).OrderBy(x => x.ListOfFaculty.Where(a => a.typeAnswer==typeAnswer).Count())">
+    <Columns>
+        <HierarchyColumn T="College" />
+        <PropertyColumn Property="x => x.Name" Title="Список учебных заведений, которые могут Вас заинтересовать:" />
+    </Columns>
+    <ChildRowContent>
+        <MudCard>
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">@context.Item.Name</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <OrganizationCard college="context.Item" typeAnswer="@typeAnswer"></OrganizationCard>
+            </MudCardContent>
+        </MudCard>
+    </ChildRowContent>
+</MudDataGrid>
+
+
+
+
+
+@code {
+
+    private List<College> HigherEducations = new List<College>();
+    private List<College> SecondaryEducations = new List<College>();
+    private List<College> ProfTrainings = new List<College>();
+    private List<College> IncTrainings = new List<College>();
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        byte[] array = await client.GetByteArrayAsync("OrganizationList.xlsx");
+
+        College.LoadExcel(array);
+
+        HigherEducations = College.OrganizationList;
+
+        states = from c in HigherEducations select c.City;
+        states = states.Union(states);
+
+    }
+
+
+
+    //==================================================================================================
+
+    private IEnumerable<String> states;
+    private string _regionValue = StaticVariables.Region;
+    private string Regionvalue
+    {
+        get => _regionValue;
+        set { _regionValue = value; ChangeRegionValue(value); }
+    }
+    private bool resetValueOnEmptyText;
+    private bool coerceText;
+    private bool coerceValue;
+
+    private async Task<IEnumerable<string>> SearchRegion(string value)
+    {
+        // In real life use an asynchronous function for fetching data from an api.
+        await Task.Delay(1);
+
+        // if text is null or empty, show complete list
+        if (string.IsNullOrEmpty(value))
+
+
+            return states;
+        return states.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+
+    private void ChangeRegionValue(string region)
+    {
+        StaticVariables.Region = region;
+    }
+    //==================================================================================================
+    private TypeAnswer _typeAnswer = StaticVariables.changeType;
+    private TypeAnswer typeAnswer
+    {
+        get => _typeAnswer;
+        set { _typeAnswer = value; ChangeTypeValue(value); }
+    }
+
+    private void ChangeTypeValue(TypeAnswer ta)
+    {
+        StaticVariables.changeType = ta;        
+    }
+
+    //===================================================================================================
+
+    private OrgType _orgType = StaticVariables.orgType;
+    private OrgType orgType
+    {
+        get => _orgType;
+        set { _orgType = value; ChangeOrgTypeValue(value); }
+    }
+
+    private void ChangeOrgTypeValue(OrgType ot)
+    {
+        StaticVariables.orgType = ot;
+    }
+
+    //===================================================================================================
+
+
+}

@@ -1,0 +1,45 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\GitHub\\ProfTestWebAssembly\\ProfTestWebAssembly\\ProfTestWebAssembly.Client\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
+    },
+    {
+      "Id": "D:\\GitHub\\ProfTestWebAssembly\\ProfTestWebAssembly\\ProfTestWebAssembly.Client\\obj\\Debug\\net8.0\\compressed\\78d8fk6c1c.gz",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js.gz"
+    },
+    {
+      "Id": "D:\\GitHub\\ProfTestWebAssembly\\ProfTestWebAssembly\\ProfTestWebAssembly.Client\\wwwroot\\Datas\\Questions.json",
+      "PackagePath": "staticwebassets\\Datas\\Questions.json"
+    },
+    {
+      "Id": "D:\\GitHub\\ProfTestWebAssembly\\ProfTestWebAssembly\\ProfTestWebAssembly.Client\\wwwroot\\OrganizationList.xlsx",
+      "PackagePath": "staticwebassets\\OrganizationList.xlsx"
+    },
+    {
+      "Id": "D:\\GitHub\\ProfTestWebAssembly\\ProfTestWebAssembly\\ProfTestWebAssembly.Client\\wwwroot\\appsettings.Development.json",
+      "PackagePath": "staticwebassets\\appsettings.Development.json"
+    },
+    {
+      "Id": "D:\\GitHub\\ProfTestWebAssembly\\ProfTestWebAssembly\\ProfTestWebAssembly.Client\\wwwroot\\appsettings.json",
+      "PackagePath": "staticwebassets\\appsettings.json"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.ProfTestWebAssembly.Client.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.ProfTestWebAssembly.Client.props",
+      "PackagePath": "build\\ProfTestWebAssembly.Client.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.ProfTestWebAssembly.Client.props",
+      "PackagePath": "buildMultiTargeting\\ProfTestWebAssembly.Client.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.ProfTestWebAssembly.Client.props",
+      "PackagePath": "buildTransitive\\ProfTestWebAssembly.Client.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

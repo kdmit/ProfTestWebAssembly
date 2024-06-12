@@ -1,0 +1,104 @@
+﻿@page "/allResults"
+@using ProfTestWebAssembly.Client.Models
+@using static ProfTestWebAssembly.Client.Pages.Test
+@inject NavigationManager Navigation
+
+<PageTitle>AllResults</PageTitle>
+
+<MudDivider DividerType="DividerType.Middle" Class="my-12" />
+
+<MudText Align="Align.Center" Typo="Typo.h4">Результаты теста</MudText>
+
+<MudDivider DividerType="DividerType.Middle" Class="my-12" />
+
+
+<MudSimpleTable Style="overflow-x: auto;">
+    <tbody>
+
+        <tr>
+            <td width="20%"><MudText>Человек-природа</MudText></td>
+            <td><MudProgressLinear Size="Size.Large" Class="style1" Value=Value1><b>@StaticVariables.UserScores[TypeAnswer.Human_Nature].Sum()</b></MudProgressLinear></td>
+        </tr>
+        <tr>
+            <td><MudText>Человек-техника</MudText></td>
+            <td><MudProgressLinear Size="Size.Large" Class="style2" Value=Value2><b>@StaticVariables.UserScores[TypeAnswer.Human_Technique].Sum()</b></MudProgressLinear></td>
+        </tr>
+        <tr>
+            <td><MudText>Человек-человек</MudText></td>
+            <td><MudProgressLinear Size="Size.Large" Class="style3" Value=Value3><b>@StaticVariables.UserScores[TypeAnswer.Human_Human].Sum()</b></MudProgressLinear></td>
+        </tr>
+        <tr>
+            <td><MudText>Человек-знаковая система</MudText></td>
+            <td><MudProgressLinear Size="Size.Large" Class="style4" Value=Value4><b>@StaticVariables.UserScores[TypeAnswer.Human_SignSystem].Sum()</b></MudProgressLinear></td>
+        </tr>
+        <tr>
+            <td><MudText>Человек - художественный образ</MudText></td>
+            <td><MudProgressLinear Size="Size.Large" Class="style5" Value=Value5><b>@StaticVariables.UserScores[TypeAnswer.Human_Art].Sum()</b></MudProgressLinear></td>
+        </tr>
+
+    </tbody>
+</MudSimpleTable>
+
+<MudDivider DividerType="DividerType.Middle" Class="my-12" />
+
+<MudText Typo="Typo.body1">
+
+    Если по шкале набрано <b>0-2</b> балла, то интерес к данной сфере не выявлен.<br/>
+    При наборе <b>3-6</b> баллах интерес и профессиональная направленность выражены средне.<br />
+    <b>7-8</b> баллов будут свидетельствовать о ярко выраженных профессиональной направленности и интересе к связанным со
+    шкалой профессиями. <br /><br />
+
+    Заполненность шкалы отражает количество набранных вами баллов по каждому из пяти типов профессий. 
+    Если вы знакомы с проектом <b>“Билет в будущее”</b>, вы также можете выбрать соответствующую профессиональную среду.
+    Рекомендуем вам выбирать тот тип профессии, по которому вы набрали наибольшее количество баллов.<br /><br />
+
+</MudText>
+
+<MudButton Color = "Color.Primary" Href="https://bvbinfo.ru/">Проект "Билет в будущее"</MudButton><br />
+<MudButton Color="Color.Primary" Href="/educationList">Получить профессиональное образование</MudButton>
+
+
+
+
+
+
+
+<style>
+    .style1 .mud-progress-linear-bar { background-color: @EvalColor(Value1, "#0F0", "#F00") !important;}
+
+    .style2 .mud-progress-linear-bar { background-color: @EvalColor(Value2, "#0F0", "#F00") !important;}
+
+    .style3 .mud-progress-linear-bar { background-color: @EvalColor(Value3, "#0F0", "#F00") !important;}
+
+    .style4 .mud-progress-linear-bar { background-color: @EvalColor(Value4, "#0F0", "#F00") !important;}
+
+    .style5 .mud-progress-linear-bar { background-color: @EvalColor(Value5, "#0F0", "#F00") !important;}
+</style>
+
+
+@code{
+
+    private int Value1 { get; set; } = 100 * StaticVariables.UserScores[TypeAnswer.Human_Nature].Sum() / 8;
+    private int Value2 { get; set; } = 100 * StaticVariables.UserScores[TypeAnswer.Human_Technique].Sum() / 8;
+    private int Value3 { get; set; } = 100*StaticVariables.UserScores[TypeAnswer.Human_Human].Sum()/8;
+    private int Value4 { get; set; } = 100 * StaticVariables.UserScores[TypeAnswer.Human_SignSystem].Sum() / 8;
+    private int Value5 { get; set; } = 100 * StaticVariables.UserScores[TypeAnswer.Human_Art].Sum() / 8;
+
+    private string EvalColor(int progress, string color1, string color2)
+    => $"color-mix(in srgb, {color1} {progress}%, {color2})";
+
+    bool _disposed;
+    public void Dispose() => _disposed = true;
+
+    private void ClickBtn() { }
+
+    protected override void OnInitialized()
+    {
+        if (StaticVariables.UserName == "Неизвестный")
+        {
+            Navigation.NavigateTo("");
+        }
+    }
+
+  
+}

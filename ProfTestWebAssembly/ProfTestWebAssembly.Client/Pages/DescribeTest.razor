@@ -1,0 +1,50 @@
+﻿@page "/describeTest"
+@using ProfTestWebAssembly.Client.Models
+@inject NavigationManager Navigation
+
+<PageTitle>describeTest</PageTitle>
+
+<MudText Align="Align.Center" Typo="Typo.h4">Дифференциально-диагностический опросник, ДДО (Е.А. Климов)</MudText>
+
+<MudDivider DividerType="DividerType.Middle" Class="my-12" />
+
+<MudText Align = "Align.Center" Typo="Typo.body1">
+    @StaticVariables.UserName! Дифференциально-диагностический опросник (автор Е.А.Климов) предназначен для отбора на различные типы профессий в
+    соответствии с классификацией типов профессий Е.А. Климова.
+    Результаты опросника показывают, к какой профессиональной сфере
+    человек испытывает склонность и проявляет интерес
+</MudText>
+
+<MudDivider DividerType="DividerType.Middle" Class="my-12" />
+
+<MudContainer MaxWidth="MaxWidth.Medium">
+    <MudCard>
+        <MudCardContent>
+
+            <MudText Typo="Typo.body1">
+                Инструкция: Предположим, что после соответствующего обучения
+                Вы сможете выполнять любую работу. Но если бы Вам пришлось
+                выбирать только одну из двух, какую бы Вы предпочли?
+            </MudText>
+
+        </MudCardContent>
+        <MudCardActions>
+
+            <MudButton Href="test" Variant="Variant.Text" Color="Color.Primary">Начать</MudButton>
+
+        </MudCardActions>
+    </MudCard>
+</MudContainer>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        if (StaticVariables.UserName == "Неизвестный")
+        {
+            Navigation.NavigateTo("");
+        }
+    }
+
+
+}

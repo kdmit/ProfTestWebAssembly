@@ -1,0 +1,125 @@
+﻿@page "/test"
+@inject HttpClient Http
+@inject ISnackbar SnackbarService
+@inject NavigationManager Navigation
+@using ProfTestWebAssembly.Client.Models
+
+<PageTitle>Test</PageTitle>
+
+<MudProgressLinear Color="Color.Info" Size="Size.Large" Value="@valueProgress" Class="my-7">
+    <MudText Typo="Typo.subtitle1" Color="Color.Dark">
+        <b>Вопрос @(numberOfCurrenQuestion+1) из @(questionsArray?.Length) (@valueProgress%)</b>
+    </MudText>
+</MudProgressLinear>
+
+<MudDivider DividerType="DividerType.Middle" Class="my-12" />
+
+<MudText Align="Align.Center" Typo="Typo.body1"> @questionsArray?[numberOfCurrenQuestion].TextQuestion </MudText>
+
+<MudDivider DividerType="DividerType.Middle" Class="my-12" />
+
+<MudRadioGroup @bind-SelectedOption="@currentAnswerType" Class="d-flex flex-column">
+    <MudStack>
+        @if (questionsArray is not null) for (int i = 0; i < questionsArray[numberOfCurrenQuestion].Answers.Length; i++)
+        {
+            Answer ans = questionsArray[numberOfCurrenQuestion].Answers[i];
+            <MudRadio Color="Color.Primary" Dense="true" Option="ans.TypeAnswer">@ans.TextAnswer</MudRadio>
+        }
+    </MudStack>
+</MudRadioGroup>
+
+<MudDivider DividerType="DividerType.Middle" Class="my-12" />
+
+<MudButton Color="Color.Primary" OnClick="ClickButton">Дальше</MudButton>
+
+
+
+@code 
+{
+    private Question[]? questionsArray;
+    private int numberOfCurrenQuestion = 0;
+
+    private TypeAnswer currentAnswerType = TypeAnswer.Nothing;
+
+    private float valueProgress => questionsArray is null ? 0 : 100*numberOfCurrenQuestion / questionsArray.Length;
+
+    protected override async Task OnInitializedAsync()
+    {
+        questionsArray = await Http.GetFromJsonAsync<Question[]>("Datas/Questions.json");
+
+        StaticVariables.UserScores[TypeAnswer.Human_Nature] = new int[questionsArray.Length];
+        StaticVariables.UserScores[TypeAnswer.Human_Technique] = new int[questionsArray.Length];
+        StaticVariables.UserScores[TypeAnswer.Human_Human] = new int[questionsArray.Length];
+        StaticVariables.UserScores[TypeAnswer.Human_SignSystem] = new int[questionsArray.Length];
+        StaticVariables.UserScores[TypeAnswer.Human_Art] = new int[questionsArray.Length];
+    }
+
+    private void ClickButton()
+    {
+        if (currentAnswerType != TypeAnswer.Nothing)
+        {
+            StaticVariables.UserScores[TypeAnswer.Human_Nature][numberOfCurrenQuestion] = 0;
+            StaticVariables.UserScores[TypeAnswer.Human_Technique][numberOfCurrenQuestion] = 0;
+            StaticVariables.UserScores[TypeAnswer.Human_Human][numberOfCurrenQuestion] = 0;
+            StaticVariables.UserScores[TypeAnswer.Human_SignSystem][numberOfCurrenQuestion] = 0;
+            StaticVariables.UserScores[TypeAnswer.Human_Art][numberOfCurrenQuestion] = 0;
+
+            StaticVariables.UserScores[currentAnswerType][numberOfCurrenQuestion] = 1;
+
+            if(questionsArray != null && numberOfCurrenQuestion >= questionsArray.Length-1)
+            {
+                Navigation.NavigateTo("resultsPage");
+            }
+            else
+            {
+
+                numberOfCurrenQuestion++;
+            }
+
+            currentAnswerType = TypeAnswer.Nothing;            
+            
+        }
+        else
+        {
+            SnackbarService.Add("Выберите ответ", Severity.Info);
+        }
+    }
+
+    public record Question(string TextQuestion, Answer[] Answers);
+
+    public record Answer(string TextAnswer, string type)
+    {
+        public TypeAnswer TypeAnswer => Enum.Parse<TypeAnswer>(type);        
+    }
+
+    [Flags]
+    public enum TypeAnswer
+    {
+        Human_Nature = 1,
+        Human_Technique = 2,
+        Human_Human = 4,
+        Human_SignSystem = 8,
+        Human_Art = 16,
+        Nothing = 32
+    }
+
+    /*
+    <MudText>
+    человек-природа : @StaticVariables.UserScores[TypeAnswer.Human_Nature].Sum()<br />
+    человек-техника : @StaticVariables.UserScores[TypeAnswer.Human_Technique].Sum()<br />
+    человек-человек : @StaticVariables.UserScores[TypeAnswer.Human_Human].Sum()<br />
+    человек-знак : @StaticVariables.UserScores[TypeAnswer.Human_SignSystem].Sum()<br />
+    человек-арт : @StaticVariables.UserScores[TypeAnswer.Human_Art].Sum()<br />
+
+    </MudText>
+    */
+
+    protected override void OnInitialized()
+    {
+        if (StaticVariables.UserName == "Неизвестный")
+        {
+            Navigation.NavigateTo("");
+        }
+    }
+
+}

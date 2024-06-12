@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "D:\\GitHub\\ProfTestWebAssembly\\ProfTestWebAssembly\\ProfTestWebAssembly\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "D:\\GitHub\\ProfTestWebAssembly\\ProfTestWebAssembly\\ProfTestWebAssembly\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.ProfTestWebAssembly.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.ProfTestWebAssembly.props",
+      "PackagePath": "build\\ProfTestWebAssembly.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.ProfTestWebAssembly.props",
+      "PackagePath": "buildMultiTargeting\\ProfTestWebAssembly.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.ProfTestWebAssembly.props",
+      "PackagePath": "buildTransitive\\ProfTestWebAssembly.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

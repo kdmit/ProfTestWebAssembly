@@ -1,0 +1,22 @@
+﻿@inherits LayoutComponentBase
+
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudGrid Class="pa-16 ma-2" Spacing="2" Justify="Justify.FlexStart">
+        <MudItem xs="9">
+
+            <MudMainContent>
+                @Body
+            </MudMainContent>
+
+        </MudItem>
+        <MudItem xs="3">
+
+            <img width="100%" src="https://i.ytimg.com/vi/3aETETEtaEw/maxresdefault.jpg?7857057827" />
+
+        </MudItem>
+    </MudGrid>
+</MudLayout>

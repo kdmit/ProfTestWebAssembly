@@ -1,0 +1,60 @@
+﻿@page "/"
+@using ProfTestWebAssembly.Client.Models
+@using ProfTestWebAssembly.Client.Layout
+@inject NavigationManager Navigation
+@inject ISnackbar SnackbarService
+
+@layout MainLayout
+
+<PageTitle>Index</PageTitle>
+
+
+<MudDivider DividerType="DividerType.Middle" Class="my-12" />
+
+<MudText Align = "Align.Center" Typo="Typo.h4">Бесплатный тест на определение профессии. Онлайн и без регистрации!</MudText>
+
+<MudDivider DividerType="DividerType.Middle" Class="my-12" />
+
+<MudContainer MaxWidth="MaxWidth.Small">
+    <MudCard>
+        <MudCardContent>
+
+            <MudText Typo = "Typo.h5">Как к Вам обращаться?</MudText>
+            <MudTextField @bind-Value="TextValue" Label="Имя" Variant="Variant.Text"></MudTextField>
+
+        </MudCardContent>
+        <MudCardActions>
+
+            <MudButton OnClick="setUserName" Variant="Variant.Text" Color="Color.Primary">Перейти к тестированию</MudButton>
+
+        </MudCardActions>
+    </MudCard>
+</MudContainer>
+
+
+
+
+@code 
+{
+    public string TextValue { get; set; }
+    [Inject] private IDialogService DialogService { get; set; }
+
+    private void setUserName()
+    {
+
+        if(TextValue != null)
+        {
+            StaticVariables.UserName = TextValue;
+            Navigation.NavigateTo("describeTest");
+            
+        }else
+        {        
+            SnackbarService.Add("Введите своё имя!", Severity.Info);
+        }
+
+    }
+
+}
+
+
+

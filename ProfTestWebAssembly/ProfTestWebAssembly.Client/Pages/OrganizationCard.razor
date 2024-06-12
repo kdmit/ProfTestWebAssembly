@@ -1,0 +1,25 @@
+﻿@page "/organization"
+@using ProfTestWebAssembly.Client.Models
+@using static ProfTestWebAssembly.Client.Pages.Test
+@using static ProfTestWebAssembly.Client.Models.MyExtensionMethods
+
+
+<MudDataGrid Items="@college.ListOfFaculty.Where(a => a.typeAnswer==typeAnswer)">
+    <Columns>
+        <PropertyColumn Property="x => x.Name" Title="Список специальностей которые Вам могут подойти:" />
+        <PropertyColumn Property="x => x.EForm.RusToString()" Title="Форма обучения" />
+        <PropertyColumn Property="x => x.Payment.RusToString()" Title="Стоимость" />
+    </Columns>
+</MudDataGrid>
+
+<MudDivider DividerType="DividerType.Middle" Class="my-12" />
+
+<MudLink Href="@college.URL" Target="_blank">Перейти на сайт</MudLink>
+
+@code {
+    [Parameter]
+    public College college { get; set; }
+    [Parameter]
+    public TypeAnswer typeAnswer{ get; set; }
+
+}
